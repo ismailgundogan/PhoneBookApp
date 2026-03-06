@@ -1,1 +1,6 @@
-<Solution />
+<Solution>
+  <Project Path="PhoneBook.API/PhoneBook.API.csproj" />
+  <Project Path="PhoneBook.Business/PhoneBook.Business.csproj" />
+  <Project Path="PhoneBook.Core/PhoneBook.Core.csproj" />
+  <Project Path="PhoneBook.DataAccess/PhoneBook.DataAccess.csproj" />
+</Solution>
