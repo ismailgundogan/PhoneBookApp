@@ -24,7 +24,7 @@ namespace PhoneBook.API
         {
             var personeller = await _personelRepository.GetAllAsync();
             var personelDtos = _mapper.Map<List<PersonelDto>>(personeller);
-            throw new Exception("Bu bir test hatasıdır."); // Hata yakalama middleware'ini test etmek için
+        
             return Ok(personelDtos);
         }
 
