@@ -1,6 +1,8 @@
 using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 using PhoneBook.Business;
+using PhoneBook.Business.Middleware;
 using PhoneBook.Business.Validators;
 using PhoneBook.DataAccess.Context;
 using PhoneBook.DataAccess.Interfaces;
@@ -21,12 +23,16 @@ builder.Services.AddScoped<IPersonelRepository, PersonelRepository>();
 
 builder.Services.AddAutoMapper(typeof(MappingProfile));// Auto Mapper ve Microsoft Automapper Dependecy Injection Extensşion pakjetleri yüklü olması lazım ve aynı sürümde olması lazım
 
+builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddValidatorsFromAssemblyContaining<PersonelValidator>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+app.UseMiddleware<ExceptionMiddleware>();
+
 // Swagger sadece Development'ta çalışsın
 if (app.Environment.IsDevelopment())
 {

@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Identity;
+using PhoneBook.Core.Dtos;
 using PhoneBook.Core.Entity;
 
 namespace PhoneBook.Business.Validators
@@ -8,10 +9,18 @@ namespace PhoneBook.Business.Validators
     {
         public PersonelValidator()
         {
-                RuleFor(p => p.Ad).NotEmpty().WithMessage("Ad alanı boş bırakılamaz.");
-                RuleFor(p => p.Soyad).NotEmpty().WithMessage("Soyad alanı boş bırakılamaz.");
-                RuleFor(p => p.DahiliNo).NotEmpty().WithMessage("Dahili No alanı boş bırakılamaz.")
-                    .Matches(@"^\d{4}$").WithMessage("Dahili No sadece 4 haneli sayı olmalıdır.");
+            RuleFor(x => x.Ad)
+                .NotEmpty().WithMessage("Personel adı boş olamaz.")
+                .MaximumLength(50).WithMessage("Tam Ad 50 karakterden fazla olamaz.");
+
+            RuleFor(x => x.Soyad)
+                .NotEmpty().WithMessage("Personel soyadı boş olamaz.")
+                .MaximumLength(50).WithMessage("Soyad 50 karakterden fazla olamaz.");
+
+            RuleFor(x => x.DahiliNo)
+                .NotEmpty().WithMessage("Dahili numara zorunludur.")
+                .Matches(@"^[0-9]{4}$").WithMessage("Dahili numara tam olarak 4 haneli bir sayı olmalıdır.");
+            // Regex kullanarak sadece rakam ve 4 hane kontrolü yaptık.
         }
     }
 }
