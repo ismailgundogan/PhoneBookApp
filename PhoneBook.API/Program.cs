@@ -7,6 +7,7 @@ using PhoneBook.Business.Validators;
 using PhoneBook.DataAccess.Context;
 using PhoneBook.DataAccess.Interfaces;
 using PhoneBook.DataAccess.Repo;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,7 +30,28 @@ builder.Services.AddValidatorsFromAssemblyContaining<PersonelValidator>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// Serilog Yapılandırması
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console() // Konsola yaz
+    .WriteTo.File("logs/phonebook-log.txt", rollingInterval: RollingInterval.Day) // Her gün yeni dosya aç
+    .CreateLogger();
+
+builder.Host.UseSerilog();
+
+// 1. CORS Politikasını Tanımla
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll",
+        builder => builder.AllowAnyOrigin()
+                          .AllowAnyMethod()
+                          .AllowAnyHeader());
+});
+
 var app = builder.Build();
+app.UseDefaultFiles(); 
+// 2. Middleware olarak etkinleştir (Routing'den sonra, Authorization'dan önce)
+app.UseCors("AllowAll");
+
 
 app.UseMiddleware<ExceptionMiddleware>();
 
@@ -50,6 +72,7 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
+
 
 app.UseHttpsRedirection();
 app.MapControllers();
