@@ -59,6 +59,7 @@ app.UseMiddleware<ExceptionMiddleware>();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
+
     app.UseSwaggerUI(c =>
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "Telefon Rehberi API V1");
@@ -72,7 +73,6 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
-
 
 app.UseHttpsRedirection();
 app.MapControllers();
