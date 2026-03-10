@@ -22,7 +22,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddScoped<IPersonelRepository, PersonelRepository>();
 
-builder.Services.AddAutoMapper(typeof(MappingProfile));// Auto Mapper ve Microsoft Automapper Dependecy Injection Extensşion pakjetleri yüklü olması lazım ve aynı sürümde olması lazım
+builder.Services.AddAutoMapper(typeof(MappingProfile)); // Auto Mapper ve Microsoft Automapper Dependecy Injection Extensşion pakjetleri yüklü olması lazım ve aynı sürümde olması lazım
 
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddValidatorsFromAssemblyContaining<PersonelValidator>();
@@ -48,10 +48,11 @@ builder.Services.AddCors(options =>
 });
 
 var app = builder.Build();
+
 app.UseDefaultFiles(); 
+
 // 2. Middleware olarak etkinleştir (Routing'den sonra, Authorization'dan önce)
 app.UseCors("AllowAll");
-
 
 app.UseMiddleware<ExceptionMiddleware>();
 
